@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 1</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000080;
+    color: #333;
+    overflow: hidden;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 20px;
+  }
+  h2 {
+    font-size: 30px;
+  }
+  .notice {
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    margin-bottom: 20px;
+  }
+  .quote {
+    text-align: center;
+    padding-bottom: 20%;
+  }
+  .quote p {
+    font-style: italic;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="notice">
+    <h2 style="color: #007bff;">Notice of the Day</h2>
+    <marquee behavior="scroll" direction="left" id="notice">
+     demo notice
+    </marquee>
+  </div>
+  <div class="quote">
+    <h2 style="color: #28a745;">Quote of the Day</h2>
+    <marquee behavior="scroll" direction="left" id="quote">
+      demo quote
+    </marquee>
+    <p>- <span id="author" style="color: #6c757d;">
+    demo author</span></p>
+  </div>
+</div>
+
+<script>
+  // Fetch notice and quote from backend
+  fetch('backend_endpoint')
+    .then(response => response.json())
+    .then(data => {
+      // Update notice and quote content
+      document.getElementById('notice').innerHTML = data.notice;
+      document.getElementById('quote').innerHTML = data.quote;
+      document.getElementById('author').innerText = data.author;
+    })
+    .catch(error => console.error('Error fetching data from backend:', error));
+</script>
+
+</body>
+</html>

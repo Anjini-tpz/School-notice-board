@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 1</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffd1dc;
+    color: #333;
+    overflow: hidden;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 20px;
+    
+  }
+  h2{
+    font-size: 30px;
+  }
+  .word {
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    margin-bottom: 20px;
+  }
+  .imp {
+    text-align: center;
+    padding-bottom: 20%;
+  }
+  .imp p {
+    font-style: italic;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="word">
+    <h2 style="color: #007bff;">Word of the Day</h2>
+    <marquee behavior="scroll" direction="left" id="word" >
+      <!-- Notice content will be dynamically fetched from backend -->
+      This is a sample word text.
+    </marquee>
+  </div>
+  <div class="imp">
+    <h2 style="color: #28a745;">Importance Of Today</h2>
+    <!-- Quote content will be dynamically fetched from backend -->
+    <marquee behavior="scroll" direction="left" id="imp">
+    <p>"This is a sample IMP."</p>
+    </marquee>
+  </div>
+</div>
+<script>
+  fetch('backend_point')
+  .then(response => response.json())
+  .then(data => { 
+    document.getElementById('word').innerHTML = data.word;
+    document.getElementById('imp'.innerHTML) = data.imp;
+  })
+  .catch(errpr => console.error('Error fetching data from backend:', error ))
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 2</title>
+<style>
+
+       body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+   /* Set body height to viewport height */
+    overflow: hidden;
+    background-color: #f0f0f0;
+    background-image: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+    background-size: 1000% auto;
+    animation: gradientBG 10s linear infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    padding: 20px;
+  }
+  h1{
+    padding-top: 20px;
+  }
+  h2 {
+    font-size: 30px;
+    text-align: center;
+  }
+  .slideshow-container {
+    position: relative;
+    max-width: 500px;
+    max-height: 300px;
+    overflow: hidden;
+  }
+  .slides {
+    display: flex;
+    flex-direction: row;
+    transition: transform 0.5s ease;
+  }
+  .slide {
+    width: 100%;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+   <h1> "Today Events" </h1>
+  <h2 id="birthdayMessage"></h2>
+  <div class="slideshow-container" id="slideshowContainer">
+    <!-- Images will be dynamically added here -->
+  </div>
+</div>
+
+<script>
+  // Fetch data from backend
+  fetch('backend_endpoint')
+    .then(response => response.json())
+    .then(data => {
+      // Check if it's anyone's birthday today
+      const today = new Date().toISOString().slice(0, 10);
+      const birthdayPeople = data.filter(person => person.dob === today);
+
+      if (birthdayPeople.length > 0) {
+        const birthdayMessage = document.getElementById('birthdayMessage');
+        birthdayMessage.innerText = `Happy birthday to ${birthdayPeople.map(person => person.name).join(', ')}`;
+
+        const slideshowContainer = document.getElementById('slideshowContainer');
+        const slides = birthdayPeople.map(person => `<div class="slide"><img src="${person.image}" alt="${person.name}"></div>`).join('');
+        slideshowContainer.innerHTML = `<div class="slides">${slides}</div>`;
+
+        // Slideshow functionality
+        let slideIndex = 0;
+        const showSlides = () => {
+          const slides = document.querySelectorAll('.slide');
+          slides.forEach(slide => slide.style.display = 'none');
+          slideIndex++;
+          if (slideIndex > slides.length) { slideIndex = 1 }
+          slides[slideIndex - 1].style.display = 'block';
+          setTimeout(showSlides, 2000); // Change image every 2 seconds
+        };
+        showSlides();
+      }
+    })
+    .catch(error => console.error('Error fetching data from backend:', error));
+</script>
+
+</body>
+</html>

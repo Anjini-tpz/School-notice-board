@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 Video from Backend</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color:#c7ecc7;
+    overflow: hidden;
+  }
+  
+  #video-container {
+    width: 100%;
+    margin: auto;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+<div id="video-container">
+  <video id="my-video" controls autoplay>
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<script>
+  // Get video element
+  var video = document.getElementById('my-video');
+  
+  // Make a request to your backend to get the video URL
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'your-backend-endpoint-url', true);
+  xhr.responseType = 'json';
+
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      // If request is successful, set the video source to the received URL
+      var videoUrl = xhr.response.videoUrl;
+      video.src = videoUrl;
+    } else {
+      console.error('Request failed. Status:', xhr.status);
+    }
+  };
+
+  xhr.onerror = function() {
+    console.error('Request failed');
+  };
+
+  xhr.send();
+</script>
+</body>
+</html>
